@@ -26,5 +26,6 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     Route::get('challenge/{id}', 'Api\UserController@challenge');
     Route::get('challenge/accept/{id}', 'Api\UserController@acceptChallenge');
+    Route::get('challenge/decline/{id}', 'Api\UserController@declineChallenge');
 
 });

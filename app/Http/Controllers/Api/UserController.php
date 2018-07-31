@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\NewChallengeEvent;
+use App\Events\NewGameEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GameResource;
 
@@ -32,7 +34,7 @@ class UserController extends Controller
                 ->orderBy('challenge_user.created_at', 'desc')
                 ->first()->pivot->id;
 
-            //fire new challenge event -- broadcast(new NewChallengeEvent(auth()->user(), $id, $challenge_id)); TODO
+            broadcast(new NewChallengeEvent(auth()->user(), $id, $challenge_id));
 
             return $challenge_id;
         } catch (\Exception $e) {
@@ -52,7 +54,7 @@ class UserController extends Controller
         }
         try {
             $game = $this->gameService()->create($challenger_id);
-            //fire new game event -- broadcast(new NewGameEvent($game, $id)); TODO
+            broadcast(new NewGameEvent($game, $id));
 
             return new GameResource($game);
 
