@@ -24,4 +24,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     Route::get('logout', 'Api\AuthController@logout');
 
+    Route::get('challenge/{id}', 'Api\UserController@challenge');
+    Route::get('challenge/accept/{id}', 'Api\UserController@acceptChallenge');
+
 });

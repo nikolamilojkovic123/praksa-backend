@@ -34,4 +34,46 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function playerX()
+    {
+        return $this->hasMany('App\Models\Game', 'user_x_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function playerO()
+    {
+        return $this->hasMany('App\Models\Game', 'user_o_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function games()
+    {
+        return $this->playerX->merge($this->playerO);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function challenged()
+    {
+        return $this->belongsToMany(User::class, 'challenge_user', 'challenger_id',
+            'challenged_id')->withPivot('status', 'id')->withTimestamps();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function challengedBy()
+    {
+        return $this->belongsToMany(User::class, 'challenge_user', 'challenged_id',
+            'challenger_id')->withPivot('status', 'id')->withTimestamps();
+    }
 }

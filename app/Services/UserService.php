@@ -27,4 +27,24 @@ class UserService
 
         return $user;
     }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function acceptChallenge($id)
+    {
+        if (auth()->user()->challengedBy()
+            ->newPivotStatement()
+            ->where('challenge_user.id', $id)
+            ->where('status', null)
+            ->update(['status' => true])) {
+
+            return auth()->user()->challengedBy()
+                ->where('challenge_user.id', $id)
+                ->where('status', true)
+                ->first()->id;
+        }
+        return false;
+    }
 }
