@@ -33,7 +33,7 @@ class NewTakeEvent implements ShouldBroadcast
      * @param $game_id
      * @param $take
      */
-    public function __construct($game_id, $take)
+    public function __construct($take, $game_id)
     {
         $this->game_id = $game_id;
         $this->take    = $take;
