@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\NewGameOverEvent;
+use App\Events\NewTakeEvent;
 use App\Http\Resources\TakeResource;
 use App\Models\Game;
 use App\Models\Take;
@@ -27,10 +29,10 @@ class TakeController extends Controller
             if (!$take) {
                 return response()->json(['message' => 'Incorrect position!'], 417);
             }
-            //broadcast(new NewTakeEvent($take, $take->game_id))->toOthers();
+            broadcast(new NewTakeEvent($take, $take->game_id))->toOthers();
             $game = Game::checkWinner();
             if ($game != false) {
-                //broadcast(new NewGameOverEvent($game));
+                broadcast(new NewGameOverEvent($game));
 
                 return new TakeResource($take);
             }

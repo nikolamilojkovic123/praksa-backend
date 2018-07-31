@@ -11,33 +11,32 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 /**
- * Class NewChallengeEvent
+ * Class NewTakeEvent
  * @package App\Events
  */
-class NewChallengeEvent implements ShouldBroadcast
+class NewTakeEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var int $id
+     * @var int $game_id
      */
-    protected $id;
+    protected $game_id;
 
     /**
-     * @var $challenger object
+     * @var $take
      */
-    public $challenger;
+    public $take;
+
     /**
-     * @var int $challenge_id
+     * NewTakeEvent constructor.
+     * @param $game_id
+     * @param $take
      */
-    public $challenge_id;
-
-
-    public function __construct($challenger, $id, $challenge_id)
+    public function __construct($game_id, $take)
     {
-        $this->challenger   = $challenger;
-        $this->id           = $id;
-        $this->challenge_id = $challenge_id;
+        $this->game_id = $game_id;
+        $this->take    = $take;
     }
 
     /**
@@ -47,6 +46,6 @@ class NewChallengeEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('user.' . $this->id);
+        return new PrivateChannel('game.' . $this->game_id);
     }
 }
