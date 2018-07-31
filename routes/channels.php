@@ -22,3 +22,7 @@ Broadcast::channel('user.{id}', function ($user, $id) {
 Broadcast::channel('challenge.{id}', function ($user, $id) {
     return true;
 });
+
+Broadcast::channel('game.{id}', function ($user, $id) {
+    return true;
+});
