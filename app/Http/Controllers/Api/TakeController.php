@@ -29,7 +29,7 @@ class TakeController extends Controller
             if (!$take) {
                 return response()->json(['message' => 'Incorrect position!'], 417);
             }
-            broadcast(new NewTakeEvent($take, $take->game_id))->toOthers();
+            broadcast(new NewTakeEvent($take))->toOthers();
             $game = Game::checkWinner();
             if ($game != false) {
                 broadcast(new NewGameOverEvent($game));

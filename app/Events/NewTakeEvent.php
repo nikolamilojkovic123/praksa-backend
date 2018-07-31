@@ -19,11 +19,6 @@ class NewTakeEvent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var int $game_id
-     */
-    protected $game_id;
-
-    /**
      * @var $take
      */
     public $take;
@@ -33,10 +28,9 @@ class NewTakeEvent implements ShouldBroadcast
      * @param $game_id
      * @param $take
      */
-    public function __construct($take, $game_id)
+    public function __construct($take)
     {
-        $this->game_id = $game_id;
-        $this->take    = $take;
+        $this->take = $take;
     }
 
     /**
@@ -46,6 +40,6 @@ class NewTakeEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('game.' . $this->game_id);
+        return new PrivateChannel('game.' . $this->take->game_id);
     }
 }
