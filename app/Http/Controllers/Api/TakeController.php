@@ -31,8 +31,6 @@ class TakeController extends Controller
             $game = $this->gameService()->checkWinner($take->game_id);
             if ($game != false) {
                 broadcast(new NewGameOverEvent($game));
-
-                return new TakeResource($take);
             }
 
             return new TakeResource($take);
