@@ -25,7 +25,6 @@ class NewTakeEvent implements ShouldBroadcast
 
     /**
      * NewTakeEvent constructor.
-     * @param $game_id
      * @param $take
      */
     public function __construct($take)

@@ -35,4 +35,32 @@ class TakeService
 
         return $take;
     }
+
+    /**
+     * @return bool
+     */
+    public function checkTurn()
+    {
+        $game = auth()->user()->games()->where('active', 1)->first();
+        if (Take::where('game_id', $game->id)->get()->count() == 0) {
+            if ($game->user_o_id == auth()->user()->id) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if (Take::where('game_id', $game->id)->get()->count() % 2 == 0) {
+            if ($game->user_o_id == auth()->user()->id) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if ($game->user_x_id == auth()->user()->id) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }

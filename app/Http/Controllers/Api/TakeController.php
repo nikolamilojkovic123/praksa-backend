@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Events\NewGameOverEvent;
 use App\Events\NewTakeEvent;
 use App\Http\Resources\TakeResource;
-use App\Models\Game;
-use App\Models\Take;
 use App\Http\Controllers\Controller;
 
 /**
@@ -22,7 +20,7 @@ class TakeController extends Controller
     public function create($position)
     {
         try {
-            if (Take::checkTurn()) {
+            if ($this->takeService()->checkTurn()) {
                 return response()->json(['message' => 'It\'s not your turn!'], 417);
             }
             $take = $this->takeService()->create($position);
@@ -30,7 +28,7 @@ class TakeController extends Controller
                 return response()->json(['message' => 'Incorrect position!'], 417);
             }
             broadcast(new NewTakeEvent($take))->toOthers();
-            $game = Game::checkWinner();
+            $game = $this->gameService()->checkWinner($take->game_id);
             if ($game != false) {
                 broadcast(new NewGameOverEvent($game));
 

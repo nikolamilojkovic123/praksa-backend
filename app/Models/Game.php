@@ -23,7 +23,7 @@ class Game extends Model
     /**
      * @var array
      */
-    protected $winningArray = [
+    public $winningArray = [
         [1, 2, 3],
         [4, 5, 6],
         [7, 8, 9],
@@ -33,35 +33,4 @@ class Game extends Model
         [1, 5, 9],
         [3, 5, 7],
     ];
-
-    /**
-     * @return bool
-     */
-    public static function checkWinner()
-    {
-        $game      = auth()->user()->games()->where('active', 1)->first();
-        $takeArray = [];
-        $takes     = Take::where('game_id', $game->id)->where('user_id', auth()->user()->id)->get();
-        foreach ($takes as $take) {
-            $takeArray[] = $take->position;
-        }
-        foreach ($game->winningArray as $row) {
-            if (count(array_intersect($takeArray, $row)) == 3) {
-                $game->winner = auth()->user()->name;
-                $game->active = 0;
-                $game->save();
-
-                return $game;
-            }
-        }
-        if (count(Take::where('game_id', $game->id)->get()) == 9) {
-            $game->winner = 'Draw';
-            $game->active = 0;
-            $game->save();
-
-            return $game;
-        }
-
-        return false;
-    }
 }
