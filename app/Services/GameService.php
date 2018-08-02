@@ -39,7 +39,7 @@ class GameService
         foreach ($takes as $take) {
             $takeArray[] = $take->position;
         }
-        foreach ($game->winningArray as $row) {
+        foreach ($game->getWinningArray() as $row) {
             if (count(array_intersect($takeArray, $row)) == 3) {
                 $game->winner = auth()->user()->name;
                 $game->active = 0;

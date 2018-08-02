@@ -23,7 +23,7 @@ class Game extends Model
     /**
      * @var array
      */
-    public $winningArray = [
+    protected $winningArray = [
         [1, 2, 3],
         [4, 5, 6],
         [7, 8, 9],
@@ -33,4 +33,12 @@ class Game extends Model
         [1, 5, 9],
         [3, 5, 7],
     ];
+
+    /**
+     * @return array
+     */
+    public function getWinningArray()
+    {
+        return $this->winningArray;
+    }
 }
