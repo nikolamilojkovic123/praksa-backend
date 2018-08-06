@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Game;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -16,7 +17,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
  */
 class NewGameOverEvent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets;
 
     /**
      * @var $game
@@ -27,7 +28,7 @@ class NewGameOverEvent implements ShouldBroadcast
      * NewGameOverEvent constructor.
      * @param $game object
      */
-    public function __construct($game)
+    public function __construct(Game $game)
     {
         $this->game = $game;
     }

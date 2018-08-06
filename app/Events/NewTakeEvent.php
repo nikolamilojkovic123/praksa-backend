@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Take;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -16,7 +17,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
  */
 class NewTakeEvent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets;
 
     /**
      * @var $take
@@ -27,7 +28,7 @@ class NewTakeEvent implements ShouldBroadcast
      * NewTakeEvent constructor.
      * @param $take
      */
-    public function __construct($take)
+    public function __construct(Take $take)
     {
         $this->take = $take;
     }

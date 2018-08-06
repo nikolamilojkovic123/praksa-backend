@@ -36,7 +36,7 @@ class UserController extends Controller
 
             broadcast(new NewChallengeEvent(auth()->user(), $id, $challenge_id));
 
-            return response()->json(['challenge_id' => $challenge_id], 417);
+            return response()->json(['challenge_id' => $challenge_id], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create resource.'], 417);
         }

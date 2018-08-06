@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -16,7 +17,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
  */
 class NewChallengeEvent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets;
 
     /**
      * @var int $id
@@ -26,14 +27,21 @@ class NewChallengeEvent implements ShouldBroadcast
     /**
      * @var $challenger object
      */
+
     public $challenger;
     /**
      * @var int $challenge_id
      */
+
     public $challenge_id;
 
-
-    public function __construct($challenger, $id, $challenge_id)
+    /**
+     * NewChallengeEvent constructor.
+     * @param User $challenger
+     * @param $id
+     * @param $challenge_id
+     */
+    public function __construct(User $challenger, $id, $challenge_id)
     {
         $this->challenger   = $challenger;
         $this->id           = $id;
