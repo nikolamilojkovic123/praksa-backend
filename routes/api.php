@@ -24,6 +24,10 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     Route::get('logout', 'Api\AuthController@logout');
 
+    Route::get('users/{id?}', 'Api\UserController@userInfo');
+    Route::get('head-to-head/{id}', 'Api\UserController@headToHead');
+    Route::get('my-games', 'Api\UserController@myGames');
+
     Route::get('challenges/{id}', 'Api\UserController@challenge');
     Route::get('challenges/accept/{id}', 'Api\UserController@acceptChallenge');
     Route::get('challenges/decline/{id}', 'Api\UserController@declineChallenge');

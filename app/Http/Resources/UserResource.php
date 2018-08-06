@@ -22,7 +22,8 @@ class UserResource extends JsonResource
             'id'     => $this->id,
             'name'   => $this->name,
             'email'  => $this->email,
-            'joined' => $this->joined
+            'joined' => $this->joined,
+            'games'  => GameResource::collection($this->games())
         ];
     }
 }

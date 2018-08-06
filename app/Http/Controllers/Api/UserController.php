@@ -6,6 +6,8 @@ use App\Events\NewChallengeEvent;
 use App\Events\NewGameEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GameResource;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 
 /**
  * Class UserController
@@ -73,5 +75,51 @@ class UserController extends Controller
             ->newPivotStatement()
             ->where('challenge_user.id', $id)
             ->update(['status' => false]);
+    }
+
+    /**
+     * @param null $id
+     * @return UserResource|\Illuminate\Http\JsonResponse
+     */
+    public function userInfo($id = null)
+    {
+        try {
+            if (isset($id)) {
+                $user = User::find($id);
+
+            } else {
+                $user = auth()->user();
+            }
+
+            return new UserResource($user);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => 'Failed to retrieve resource.'], 404);
+        }
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function headToHead($id)
+    {
+        $games = $this->gameService()->headToHead($id);
+        if ($games) {
+//            return GameResource::collection($games);
+            return response()->json(['data' => $games], 200);
+        }
+
+        return response()->json(['message' => 'No games to show.'], 417);
+    }
+
+    public function myGames()
+    {
+        try {
+            $games = $this->gameService()->myGames();
+
+            return GameResource::collection($games);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => 'Failed to retrieve resource.'], 404);
+        }
     }
 }
