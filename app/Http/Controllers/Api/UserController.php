@@ -59,7 +59,6 @@ class UserController extends Controller
             broadcast(new NewGameEvent($game, $id));
 
             return new GameResource($game);
-
         } catch (\Exception $exception) {
             return response()->json(['message' => 'Failed to create resource.'], 417);
         }
@@ -86,7 +85,6 @@ class UserController extends Controller
         try {
             if (isset($id)) {
                 $user = User::find($id);
-
             } else {
                 $user = auth()->user();
             }
@@ -99,19 +97,22 @@ class UserController extends Controller
 
     /**
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function headToHead($id)
     {
-        $games = $this->gameService()->headToHead($id);
-        if ($games) {
-//            return GameResource::collection($games);
-            return response()->json(['data' => $games], 200);
-        }
+        try {
+            $games = $this->gameService()->headToHead($id);
 
-        return response()->json(['message' => 'No games to show.'], 417);
+            return GameResource::collection($games);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => 'Failed to retrieve resource.'], 404);
+        }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function myGames()
     {
         try {

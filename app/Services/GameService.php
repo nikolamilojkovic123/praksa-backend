@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Game;
 use App\Models\Take;
-use App\Models\User;
 
 /**
  * Class GameService
@@ -60,19 +59,18 @@ class GameService
         return false;
     }
 
+
     /**
-     * @param $id
-     * @return array|bool
+     * @param int $id
+     * @return mixed
      */
     public function headToHead($id)
     {
-        $games    = false;
-        $my_games = auth()->user()->games();
-        foreach ($my_games as $my_game) {
-            if (($my_game->user_x_id == $id && $my_game->user_o_id == auth()->user()->id) || ($my_game->user_o_id == $id && $my_game->user_x_id == auth()->user()->id)) {
-                $games[] = $my_game;
-            }
-        }
+        $games = Game::where(function ($query) use ($id) {
+            $query->where('user_x_id', auth()->user()->id)->where('user_o_id', $id);
+        })->orWhere(function ($query) use ($id) {
+            $query->where('user_o_id', auth()->user()->id)->where('user_x_id', $id);
+        })->get();
 
         return $games;
     }
