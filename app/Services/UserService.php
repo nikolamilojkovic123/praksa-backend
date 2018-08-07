@@ -32,7 +32,7 @@ class UserService
      * @param $id
      * @return bool
      */
-    public function acceptChallenge($id)
+    public function approveChallenge($id)
     {
         if (auth()->user()->challengedBy()
             ->newPivotStatement()
@@ -46,5 +46,38 @@ class UserService
                 ->first()->id;
         }
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function setIncludeGames()
+    {
+        $_GET['include'] = 'games';
+
+        return true;
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function rejectChallenge($id)
+    {
+        return auth()->user()->challengedBy()
+            ->newPivotStatement()
+            ->where('challenge_user.id', $id)
+            ->update(['status' => false]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChallengeId()
+    {
+        return auth()->user()->challenged()
+            ->withPivot('id')
+            ->orderBy('challenge_user.created_at', 'desc')
+            ->first()->pivot->id;
     }
 }

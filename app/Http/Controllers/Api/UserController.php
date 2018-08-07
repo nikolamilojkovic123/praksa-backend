@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\NewChallengeDeclinedEvent;
 use App\Events\NewChallengeEvent;
 use App\Events\NewGameEvent;
 use App\Http\Controllers\Controller;
@@ -31,10 +32,7 @@ class UserController extends Controller
     {
         try {
             auth()->user()->challenged()->attach($id);
-            $challenge_id = auth()->user()->challenged()
-                ->withPivot('id')
-                ->orderBy('challenge_user.created_at', 'desc')
-                ->first()->pivot->id;
+            $challenge_id = $this->userService()->getChallengeId();
 
             broadcast(new NewChallengeEvent(auth()->user(), $id, $challenge_id));
 
@@ -50,7 +48,7 @@ class UserController extends Controller
      */
     public function acceptChallenge($id)
     {
-        $challenger_id = $this->userService()->acceptChallenge($id);
+        $challenger_id = $this->userService()->approveChallenge($id);
         if (!$challenger_id) {
             return response()->json(['message' => 'Invalid challenge id.'], 404);
         }
@@ -65,15 +63,14 @@ class UserController extends Controller
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     public function declineChallenge($id)
     {
-        return auth()->user()->challengedBy()
-            ->newPivotStatement()
-            ->where('challenge_user.id', $id)
-            ->update(['status' => false]);
+        broadcast(new NewChallengeDeclinedEvent($id));
+
+        return $this->userService()->rejectChallenge($id);
     }
 
     /**
@@ -83,6 +80,7 @@ class UserController extends Controller
     public function userInfo($id = null)
     {
         try {
+            $this->userService()->setIncludeGames();
             if (isset($id)) {
                 $user = User::find($id);
             } else {
