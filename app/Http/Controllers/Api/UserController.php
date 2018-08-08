@@ -80,7 +80,6 @@ class UserController extends Controller
     public function userInfo($id = null)
     {
         try {
-            $this->userService()->setIncludeGames();
             if (isset($id)) {
                 $user = User::find($id);
             } else {
@@ -108,13 +107,15 @@ class UserController extends Controller
         }
     }
 
+
     /**
+     * @param null $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function myGames()
+    public function pastGames($id = null)
     {
         try {
-            $games = $this->gameService()->myGames();
+            $games = $this->gameService()->pastGames($id);
 
             return GameResource::collection($games);
         } catch (\Exception $exception) {

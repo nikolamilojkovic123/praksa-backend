@@ -41,4 +41,20 @@ class Game extends Model
     {
         return $this->winningArray;
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userX()
+    {
+        return $this->belongsTo('App\Models\User', 'user_x_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userO()
+    {
+        return $this->belongsTo('App\Models\User', 'user_o_id');
+    }
 }

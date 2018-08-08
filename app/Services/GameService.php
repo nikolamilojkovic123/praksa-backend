@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Game;
 use App\Models\Take;
+use App\Models\User;
 
 /**
  * Class GameService
@@ -75,13 +76,18 @@ class GameService
         return $games;
     }
 
+
     /**
+     * @param null $id
      * @return mixed
      */
-    public function myGames()
+    public function pastGames($id = null)
     {
-        $games = auth()->user()->games();
-
+        if (isset($id)) {
+            $games = User::find($id)->games();
+        } else {
+            $games = auth()->user()->games();
+        }
         return $games;
     }
 }

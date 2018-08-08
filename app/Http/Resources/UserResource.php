@@ -23,20 +23,6 @@ class UserResource extends JsonResource
             'name'   => $this->name,
             'email'  => $this->email,
             'joined' => $this->joined,
-            'games'  => GameResource::collection($this->when($this->includeGames(), $this->games()))
         ];
-    }
-
-    /**
-     * @return bool
-     */
-    public function includeGames()
-    {
-        if (isset($_GET['include'])) {
-            if ($_GET['include'] == 'games') {
-                return true;
-            }
-        }
-        return false;
     }
 }

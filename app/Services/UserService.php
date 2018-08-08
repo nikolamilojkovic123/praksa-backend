@@ -49,16 +49,6 @@ class UserService
     }
 
     /**
-     * @return bool
-     */
-    public function setIncludeGames()
-    {
-        $_GET['include'] = 'games';
-
-        return true;
-    }
-
-    /**
      * @param $id
      * @return mixed
      */

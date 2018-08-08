@@ -20,8 +20,8 @@ class GameResource extends JsonResource
     {
         return [
             'id'        => $this->id,
-            'user_x_id' => $this->user_x_id,
-            'user_o_id' => $this->user_o_id,
+            'user_x_id' => new UserResource($this->userX),
+            'user_o_id' => new UserResource($this->userO),
             'active'    => $this->active,
             'winner'    => $this->winner
         ];
