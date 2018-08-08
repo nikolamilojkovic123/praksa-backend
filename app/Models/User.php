@@ -40,7 +40,7 @@ class User extends Authenticatable
      */
     public function playerX()
     {
-        return $this->hasMany('App\Models\Game', 'user_x_id');
+        return $this->hasMany('App\Models\Game', 'user_x_id')->with(['userX', 'userO']);
     }
 
     /**
@@ -48,7 +48,7 @@ class User extends Authenticatable
      */
     public function playerO()
     {
-        return $this->hasMany('App\Models\Game', 'user_o_id');
+        return $this->hasMany('App\Models\Game', 'user_o_id')->with(['userX', 'userO']);
     }
 
     /**
