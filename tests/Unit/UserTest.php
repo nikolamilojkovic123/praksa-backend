@@ -18,7 +18,7 @@ class UserTest extends TestCase
     public function testUserInfo()
     {
         $user  = User::find(1);
-        $token = JWTAuth::attempt(['email' => $user->email, 'password' => 'password']);
+        $token = JWTAuth::fromUser($user);
 
         $response = $this->json('GET', '/api/users');
         $response->assertStatus(400);
