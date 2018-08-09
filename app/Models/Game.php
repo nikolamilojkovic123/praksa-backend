@@ -23,6 +23,14 @@ class Game extends Model
     /**
      * @var array
      */
+    protected $with = [
+        'userX',
+        'userO'
+    ];
+
+    /**
+     * @var array
+     */
     protected $winningArray = [
         [1, 2, 3],
         [4, 5, 6],
