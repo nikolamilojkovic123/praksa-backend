@@ -34,5 +34,7 @@ class UserTest extends TestCase
                 'joined'
             ]
         ]);
+
+        $this->assertEquals($user->name, $response->decodeResponseJson('data')['name']);
     }
 }
